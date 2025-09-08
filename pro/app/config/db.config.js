@@ -1,13 +1,14 @@
 module.exports = {
-  HOST: "ep-old-sunset-adsu0sy0-pooler.c-2.us-east-1.aws.neon.tech",
-  USER: "neondb_owner",
-  PASSWORD: "npg_m1fLKashdcY7",
-  DB: "neondb",
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
   dialect: "postgres",
   pool: {
     max: 5,
     min: 0,
     acquire: 30000,
     idle: 10000
-  }
+  },
+  port: process.env.DB_PORT || 5432
 };

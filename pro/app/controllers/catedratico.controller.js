@@ -15,7 +15,8 @@ exports.create = (req, res) => {
         email: req.body.email,
         especialidad: req.body.especialidad,
         telefono: req.body.telefono,
-        estado: req.body.estado ? req.body.estado : "activo"
+        estado: req.body.estado ? req.body.estado : "activo",
+        fecha_ingreso: req.body.fecha_ingreso ? req.body.fecha_ingreso : null
     };
 
     Catedratico.create(catedratico)
@@ -41,50 +42,50 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Obtener un catedrático por ID
+// Obtener un catedrático por nombre
 exports.findOne = (req, res) => {
-    const id_catedratico = req.params.id_catedratico;
+    const nombre = req.params.nombre;
 
-    Catedratico.findByPk(id_catedratico)
+    Catedratico.findOne({ where: { nombre: nombre } })
         .then(data => {
             if (data) res.send(data);
             else res.status(404).send({ message: "Catedrático no encontrado" });
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error al obtener catedrático con id=" + id_catedratico
+                message: "Error al obtener catedrático con nombre=" + nombre
             });
         });
 };
 
-// Actualizar un catedrático por ID
+// Actualizar un catedrático por nombre
 exports.update = (req, res) => {
-    const id_catedratico = req.params.id_catedratico;
+    const nombre = req.params.nombre;
 
-    Catedratico.update(req.body, { where: { id_catedratico } })
+    Catedratico.update(req.body, { where: { nombre } })
         .then(num => {
             if (num == 1) {
                 res.send({ message: "Catedrático actualizado correctamente." });
             } else {
-                res.send({ message: `No se pudo actualizar el catedrático con id=${id_catedratico}. Quizá no se encontró.` });
+                res.send({ message: `No se pudo actualizar el catedrático con nombre=${nombre}. Quizá no se encontró.` });
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error al actualizar catedrático con id=" + id_catedratico });
+            res.status(500).send({ message: "Error al actualizar catedrático con nombre=" + nombre });
         });
 };
 
-// Eliminar un catedrático por ID
+// Eliminar un catedrático por nombre
 exports.delete = (req, res) => {
-    const id_catedratico = req.params.id_catedratico;
+    const nombre = req.params.nombre;
 
-    Catedratico.destroy({ where: { id_catedratico } })
+    Catedratico.destroy({ where: { nombre } })
         .then(num => {
             if (num == 1) res.send({ message: "Catedrático eliminado correctamente." });
-            else res.send({ message: `No se encontró el catedrático con id=${id_catedratico}.` });
+            else res.send({ message: `No se encontró el catedrático con nombre=${nombre}.` });
         })
         .catch(err => {
-            res.status(500).send({ message: "No se pudo eliminar catedrático con id=" + id_catedratico });
+            res.status(500).send({ message: "No se pudo eliminar catedrático con nombre=" + nombre });
         });
 };
 

@@ -9,14 +9,14 @@ module.exports = app => {
     // Obtener todos los Catedraticos
     router.get("/", catedraticos.findAll);
   
-    // Obtener un solo Catedratico con id_catedratico
-    router.get("/:id_catedratico", catedraticos.findOne);
+    // Obtener un solo Catedratico por nombre
+    router.get("/nombre/:nombre", catedraticos.findOneByName);
   
-    // Actualizar un Catedratico con id_catedratico
-    router.put("/:id_catedratico", catedraticos.update);
+    // Actualizar un Catedratico por nombre
+    router.put("/nombre/:nombre", catedraticos.updateByName);
   
-    // Eliminar un Catedratico con id_catedratico
-    router.delete("/:id_catedratico", catedraticos.delete);
+    // Eliminar un Catedratico por nombre
+    router.delete("/nombre/:nombre", catedraticos.deleteByName);
   
     app.use('/api/catedraticos', router);
-  }
+}

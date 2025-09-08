@@ -1,5 +1,3 @@
-const { curso } = require("../models/index.js");
-
 module.exports = app => {
     const curso = require("../controllers/curso.controller.js");
   
@@ -11,16 +9,17 @@ module.exports = app => {
     // Obtener todos los cursos
     router.get("/", curso.findAll);
   
-    // Obtener un solo curso con id_curso
-    router.get("/:id_curso", curso.findOne);
+    // Obtener un solo curso por nombre
+    router.get("/nombre/:nombre", curso.findOneByName);
   
-    // Actualizar un curso con id_curso
-    router.put("/:id_curso", curso.update);
+    // Actualizar un curso por nombre
+    router.put("/nombre/:nombre", curso.updateByName);
   
-    // Eliminar un curso con id_curso
-    router.delete("/:id_curso", curso.delete);
-  //eliminar todos los cursos
-   router.delete("/delete", curso.deleteAll);
+    // Eliminar un curso por nombre
+    router.delete("/nombre/:nombre", curso.deleteByName);
+
+    // Eliminar todos los cursos
+    router.delete("/delete", curso.deleteAll);
 
     app.use('/api/curso', router);
-  }
+}

@@ -37,48 +37,48 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Obtener un curso por ID
+// Obtener un curso por nombre
 exports.findOne = (req, res) => {
-    const id_curso = req.params.id_curso;
+    const nombre = req.params.nombre;
 
-    Curso.findByPk(id_curso)
+    Curso.findOne({ where: { nombre: nombre } })
         .then(data => {
             if (data) res.send(data);
             else res.status(404).send({ message: "Curso no encontrado" });
         })
         .catch(err => {
-            res.status(500).send({ message: "Error al obtener curso con id=" + id_curso });
+            res.status(500).send({ message: "Error al obtener curso con nombre=" + nombre });
         });
 };
 
-// Actualizar un curso por ID
+// Actualizar un curso por nombre
 exports.update = (req, res) => {
-    const id_curso = req.params.id_curso;
+    const nombre = req.params.nombre;
 
-    Curso.update(req.body, { where: { id_curso } })
+    Curso.update(req.body, { where: { nombre } })
         .then(num => {
             if (num == 1) {
                 res.send({ message: "Curso actualizado correctamente." });
             } else {
-                res.send({ message: `No se pudo actualizar el curso con id=${id_curso}. Quizá no se encontró.` });
+                res.send({ message: `No se pudo actualizar el curso con nombre=${nombre}. Quizá no se encontró.` });
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error al actualizar curso con id=" + id_curso });
+            res.status(500).send({ message: "Error al actualizar curso con nombre=" + nombre });
         });
 };
 
-// Eliminar un curso por ID
+// Eliminar un curso por nombre
 exports.delete = (req, res) => {
-    const id_curso = req.params.id_curso;
+    const nombre = req.params.nombre;
 
-    Curso.destroy({ where: { id_curso } })
+    Curso.destroy({ where: { nombre } })
         .then(num => {
             if (num == 1) res.send({ message: "Curso eliminado correctamente." });
-            else res.send({ message: `No se encontró el curso con id=${id_curso}.` });
+            else res.send({ message: `No se encontró el curso con nombre=${nombre}.` });
         })
         .catch(err => {
-            res.status(500).send({ message: "No se pudo eliminar curso con id=" + id_curso });
+            res.status(500).send({ message: "No se pudo eliminar curso con nombre=" + nombre });
         });
 };
 
