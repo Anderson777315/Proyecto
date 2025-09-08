@@ -30,6 +30,9 @@ app.get("/", (req, res) => {
 // Importamos las rutas
 require("./app/routes/curso.routes")(app);
 require("./app/routes/catedratico.routes")(app);
+require("./app/routes/estudiante.routes")(app);  
+require("./app/routes/asignacion.routes")(app); 
+require("./app/routes/grado.routes")(app);
 
 // Puerto y inicio del servidor
 const PORT = process.env.PORT || 18;

@@ -15,7 +15,7 @@ exports.create = (req, res) => {
         email: req.body.email,
         especialidad: req.body.especialidad,
         telefono: req.body.telefono,
-        estado: req.body.estado ? req.body.estado : "soltero"
+        estado: req.body.estado ? req.body.estado : "activo"
     };
 
     Catedratico.create(catedratico)

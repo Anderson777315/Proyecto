@@ -21,7 +21,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
         },
         estado: {
-        type: Sequelize.ENUM("soltero", "casado"),        }
+         type: Sequelize.ENUM("activo", "inactivo"),
+            allowNull: false,
+            defaultValue: "activo"
+        }
     });
     
     return Catedratico;
