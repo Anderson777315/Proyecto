@@ -61,9 +61,9 @@ exports.findOneByName = (req, res) => {
 exports.updateByName = (req, res) => {
     const nombre = req.params.nombre;
 
-    Catedratico.update(req.body, { where: { nombre: nombre } })
-        .then(num => {
-            if (num == 1) {
+    Catedratico.update(req.body, { where: { nombre } })
+        .then(([num]) => {   // ← destructuring aquí
+            if (num === 1) {
                 res.send({ message: "Catedrático actualizado correctamente." });
             } else {
                 res.send({
@@ -77,6 +77,7 @@ exports.updateByName = (req, res) => {
             });
         });
 };
+
 
 // Eliminar un catedrático por nombre
 exports.deleteByName = (req, res) => {
