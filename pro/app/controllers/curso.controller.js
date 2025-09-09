@@ -13,8 +13,8 @@ exports.create = async (req, res) => {
     semestre: req.body.semestre,
     creditos: req.body.creditos,
     estado: req.body.estado,
-    catedratico: req.body.catedratico,
-    descripcion: req.body.descripcion
+    catedratico: req.body.catedratico
+    
   };
 
   try {

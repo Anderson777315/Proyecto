@@ -29,12 +29,10 @@ db.sequelize = sequelize;
 
 // Importamos los modelos
 db.Catedratico = require("./catedratico.model.js")(sequelize, Sequelize);
-db.curso = require("./curso.model.js")(sequelize, Sequelize);
-
-db.estudiante = require("./estudiante.model.js")(sequelize, Sequelize);
-db.asignacion = require("./asignacion.model.js")(sequelize, Sequelize);
-db.grado = require("./grado.model.js")(sequelize, Sequelize);
-
+db.Curso = require("./curso.model.js")(sequelize, Sequelize);
+db.Estudiante = require("./estudiante.model.js")(sequelize, Sequelize);
+db.Asignacion = require("./asignacion.model.js")(sequelize, Sequelize);
+db.Grado = require("./grado.model.js")(sequelize, Sequelize);
 // Relaciones
 // Relaciones correctas
 db.curso.belongsTo(db.Catedratico, { foreignKey: 'catedraticoCod' });
