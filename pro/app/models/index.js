@@ -35,20 +35,21 @@ db.Asignacion = require("./asignacion.model.js")(sequelize, Sequelize);
 db.Grado = require("./grado.model.js")(sequelize, Sequelize);
 // Relaciones
 // Relaciones correctas
-db.curso.belongsTo(db.Catedratico, { foreignKey: 'catedraticoCod' });
-db.Catedratico.hasMany(db.curso, { foreignKey: 'catedraticoCod' });
+// Relaciones correctas
+db.Curso.belongsTo(db.Catedratico, { foreignKey: 'catedraticoCod' });
+db.Catedratico.hasMany(db.Curso, { foreignKey: 'catedraticoCod' });
 
-db.asignacion.belongsTo(db.estudiante, { foreignKey: 'studentID' });
-db.estudiante.hasMany(db.asignacion, { foreignKey: 'studentID' });
+db.Asignacion.belongsTo(db.Estudiante, { foreignKey: 'studentID' });
+db.Estudiante.hasMany(db.Asignacion, { foreignKey: 'studentID' });
 
-db.asignacion.belongsTo(db.curso, { foreignKey: 'courseID' });
-db.curso.hasMany(db.asignacion, { foreignKey: 'courseID' });
+db.Asignacion.belongsTo(db.Curso, { foreignKey: 'courseID' });
+db.Curso.hasMany(db.Asignacion, { foreignKey: 'courseID' });
 
-db.grado.belongsTo(db.estudiante, { foreignKey: 'studentID' });
-db.estudiante.hasMany(db.grado, { foreignKey: 'studentID' });
+db.Grado.belongsTo(db.Estudiante, { foreignKey: 'studentID' });
+db.Estudiante.hasMany(db.Grado, { foreignKey: 'studentID' });
 
-db.grado.belongsTo(db.curso, { foreignKey: 'courseID' });
-db.curso.hasMany(db.grado, { foreignKey: 'courseID' });
+db.Grado.belongsTo(db.Curso, { foreignKey: 'courseID' });
+db.Curso.hasMany(db.Grado, { foreignKey: 'courseID' });
 
 // Exportamos db para poder usarlo en otros archivos
 module.exports = db;
