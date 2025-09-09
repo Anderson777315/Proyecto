@@ -1,110 +1,96 @@
 const db = require("../models");
-const Curso = db.Curso; // Asegúrate de que tu modelo se llame así
-const Op = db.Sequelize.Op;
+const Curso = db.Curso;
 
 // Crear un nuevo curso
-exports.create = (req, res) => {
-    if (!req.body.nombre) {
-        res.status(400).send({
-            message: "El nombre no puede estar vacío!"
-        });
-        return;
-    }
+exports.create = async (req, res) => {
+  if (!req.body.nombre) {
+    return res.status(400).send({ message: "El nombre del curso es obligatorio." });
+  }
 
-    const curso = {
-        nombre: req.body.nombre,
-        descripcion: req.body.descripcion,
-        duracion: req.body.duracion,
-        nivel: req.body.nivel
-    };
+  const nuevoCurso = {
+    nombre: req.body.nombre,
+    codigo: req.body.codigo,
+    semestre: req.body.semestre,
+    creditos: req.body.creditos,
+    estado: req.body.estado,
+    catedratico: req.body.catedratico,
+    descripcion: req.body.descripcion
+  };
 
-    Curso.create(curso)
-        .then(data => res.send(data))
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Ocurrió un error al crear el curso."
-            });
-        });
+  try {
+    const curso = await Curso.create(nuevoCurso);
+    res.status(201).send(curso);
+  } catch (err) {
+    console.error("Error al crear curso:", err);
+    res.status(500).send({ message: err.message || "Error al crear el curso." });
+  }
 };
 
 // Obtener todos los cursos
-exports.findAll = (req, res) => {
-    const nombre = req.query.nombre;
-    const condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
-
-    Curso.findAll({ where: condition })
-        .then(data => res.send(data))
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Ocurrió un error al recuperar los cursos."
-            });
-        });
+exports.findAll = async (req, res) => {
+  try {
+    const cursos = await Curso.findAll();
+    console.log("Cursos obtenidos:", cursos);
+    res.status(200).send(cursos);
+  } catch (err) {
+    console.error("Error al obtener cursos:", err);
+    res.status(500).send({ message: err.message || "Ocurrió un error al obtener los cursos." });
+  }
 };
 
 // Obtener un curso por nombre
-exports.findOne = (req, res) => {
-    const nombre = req.params.nombre;
-
-    Curso.findOne({ where: { nombre: nombre } })
-        .then(data => res.send(data))
-        .catch(err => {
-            res.status(500).send({
-                message: "Error al recuperar el curso con nombre=" + nombre
-            });
-        });
+exports.findOne = async (req, res) => {
+  const nombre = req.params.nombre;
+  try {
+    const curso = await Curso.findOne({ where: { nombre: nombre } });
+    if (!curso) return res.status(404).send({ message: "Curso no encontrado." });
+    res.send(curso);
+  } catch (err) {
+    console.error("Error al obtener curso:", err);
+    res.status(500).send({ message: err.message || "Error al obtener el curso." });
+  }
 };
 
 // Actualizar un curso por nombre
-exports.update = (req, res) => {
-    const nombre = req.params.nombre;
-
-    Curso.update(req.body, { where: { nombre: nombre } })
-        .then(num => {
-            if (num == 1) {
-                res.send({ message: "Curso actualizado correctamente." });
-            } else {
-                res.send({
-                    message: `No se pudo actualizar el curso con nombre=${nombre}. Quizá no se encontró o el cuerpo está vacío!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error al actualizar el curso con nombre=" + nombre
-            });
-        });
+exports.update = async (req, res) => {
+  const nombre = req.params.nombre;
+  try {
+    const [updated] = await Curso.update(req.body, { where: { nombre: nombre } });
+    if (updated) {
+      const cursoActualizado = await Curso.findOne({ where: { nombre: nombre } });
+      res.send(cursoActualizado);
+    } else {
+      res.status(404).send({ message: "Curso no encontrado para actualizar." });
+    }
+  } catch (err) {
+    console.error("Error al actualizar curso:", err);
+    res.status(500).send({ message: err.message || "Error al actualizar el curso." });
+  }
 };
 
 // Eliminar un curso por nombre
-exports.delete = (req, res) => {
-    const nombre = req.params.nombre;
-
-    Curso.destroy({ where: { nombre: nombre } })
-        .then(num => {
-            if (num == 1) {
-                res.send({ message: "Curso eliminado correctamente!" });
-            } else {
-                res.send({
-                    message: `No se pudo eliminar el curso con nombre=${nombre}. Quizá no se encontró!`
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "No se pudo eliminar el curso con nombre=" + nombre
-            });
-        });
+exports.delete = async (req, res) => {
+  const nombre = req.params.nombre;
+  try {
+    const deleted = await Curso.destroy({ where: { nombre: nombre } });
+    if (deleted) {
+      res.send({ message: "Curso eliminado correctamente." });
+    } else {
+      res.status(404).send({ message: "Curso no encontrado para eliminar." });
+    }
+  } catch (err) {
+    console.error("Error al eliminar curso:", err);
+    res.status(500).send({ message: err.message || "Error al eliminar el curso." });
+  }
 };
 
 // Eliminar todos los cursos
-exports.deleteAll = (req, res) => {
-    Curso.destroy({ where: {}, truncate: false })
-        .then(nums => {
-            res.send({ message: `${nums} cursos fueron eliminados correctamente!` });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || "Ocurrió un error al eliminar todos los cursos."
-            });
-        });
+exports.deleteAll = async (req, res) => {
+  try {
+    const deleted = await Curso.destroy({ where: {}, truncate: false });
+    res.send({ message: `${deleted} cursos fueron eliminados.` });
+  } catch (err) {
+    console.error("Error al eliminar todos los cursos:", err);
+    res.status(500).send({ message: err.message || "Error al eliminar los cursos." });
+  }
 };
