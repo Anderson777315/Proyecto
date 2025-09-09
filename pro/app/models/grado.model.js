@@ -1,32 +1,35 @@
 module.exports = (sequelize, Sequelize) => {
-    const Grado = sequelize.define("grado", {
-        courseID: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        studentID: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        nota: {
-            type: Sequelize.FLOAT,
-            allowNull: false
-        },
-        tipoEvaluacion: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        fecha: {
-            type: Sequelize.DATE,
-            allowNull: false,
-            defaultValue: Sequelize.NOW
-        },
-        porcentajePonderacion: {
-            type: Sequelize.FLOAT,
-            allowNull: false,
-            defaultValue: 100
-        }
-    });
+  const Nota = sequelize.define("grado", {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    cursoId: {                 
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    estudianteId: {           
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    parcial1: {
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: 0
+    },
+    parcial2: {
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: 0
+    },
+    exafinal: {                
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: 0
+    },
+    zona: {
+      type: Sequelize.DECIMAL(5, 2),
+      defaultValue: 0
+    }
+  });
 
-    return Grado;
+  return Nota;
 };

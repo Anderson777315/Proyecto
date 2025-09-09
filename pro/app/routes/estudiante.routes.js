@@ -1,27 +1,14 @@
 module.exports = app => {
-    const estudiantes = require("../controllers/estudiante.controller.js");
-    const router = require("express").Router();
+  const estudiantes = require("../controllers/estudiante.controller.js");
+  const router = require("express").Router();
 
-    // Crear un nuevo estudiante
-    router.post("/", estudiantes.create);
+  router.post("/create", estudiantes.create);
+  router.get("/", estudiantes.findAll);
+  router.get("/nombre/:nombre", estudiantes.findOneByNombre); // 👈 get one by name
+  router.put("/update/:id", estudiantes.update);              // by id
+  router.delete("/delete/:id", estudiantes.delete);           // by id
+  router.delete("/delete", estudiantes.deleteAll);
+  router.get("/estado/activos", estudiantes.findAllActivos);
 
-    // Obtener todos los estudiantes
-    router.get("/", estudiantes.findAll);
-
-    // Obtener un estudiante por carnet
-    router.get("/carnet/:carnet", estudiantes.findOneByCarnet);
-
-    // Actualizar un estudiante por carnet
-    router.put("/carnet/:carnet", estudiantes.updateByCarnet);
-
-    // Eliminar un estudiante por carnet
-    router.delete("/carnet/:carnet", estudiantes.deleteByCarnet);
-
-    // Eliminar todos los estudiantes
-    router.delete("/", estudiantes.deleteAll);
-
-    // Obtener todos los estudiantes activos
-    router.get("/estado/activos", estudiantes.findAllActivos);
-
-    app.use("/api/estudiantes", router);
+  app.use("/api/estudiantes", router);
 };
