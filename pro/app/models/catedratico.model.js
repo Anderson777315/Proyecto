@@ -21,10 +21,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
         },
         estado: {
-         type: Sequelize.ENUM("activo", "inactivo ","suspendido"),
-            allowNull: false,
-            defaultValue: "activo"
-        },
+    type: Sequelize.ENUM("activo", "inactivo", "suspendido"),
+    allowNull: false,
+    defaultValue: "activo"
+},
         fecha_ingreso: {
     type: Sequelize.DATE,
 

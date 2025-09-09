@@ -12,10 +12,13 @@ exports.create = (req, res) => {
     }
 
     const catedratico = {
-        nombre: req.body.nombre,
-        departamento: req.body.departamento,
-        correo: req.body.correo,
-        telefono: req.body.telefono
+           nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    email: req.body.email,
+    especialidad: req.body.especialidad,
+    telefono: req.body.telefono,
+    estado: req.body.estado,
+    fecha_ingreso: req.body.fecha_ingreso
     };
 
     Catedratico.create(catedratico)

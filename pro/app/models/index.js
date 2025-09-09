@@ -28,15 +28,17 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // Importamos los modelos
-db.catedratico = require("./catedratico.model.js")(sequelize, Sequelize);
+db.Catedratico = require("./catedratico.model.js")(sequelize, Sequelize);
 db.curso = require("./curso.model.js")(sequelize, Sequelize);
+
 db.estudiante = require("./estudiante.model.js")(sequelize, Sequelize);
 db.asignacion = require("./asignacion.model.js")(sequelize, Sequelize);
 db.grado = require("./grado.model.js")(sequelize, Sequelize);
 
 // Relaciones
-db.curso.belongsTo(db.catedratico, { foreignKey: 'catedraticoCod' });
-db.catedratico.hasMany(db.curso, { foreignKey: 'catedraticoCod' });
+// Relaciones correctas
+db.curso.belongsTo(db.Catedratico, { foreignKey: 'catedraticoCod' });
+db.Catedratico.hasMany(db.curso, { foreignKey: 'catedraticoCod' });
 
 db.asignacion.belongsTo(db.estudiante, { foreignKey: 'studentID' });
 db.estudiante.hasMany(db.asignacion, { foreignKey: 'studentID' });
