@@ -27,10 +27,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         fecha_ingreso: {
     type: Sequelize.DATE,
-    allowNull: true       // puedes poner false si siempre quieres que tenga valor
-}
 
-    });
+}
+ });
     
     return Catedratico;
 }

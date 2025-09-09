@@ -1,32 +1,27 @@
 module.exports = app => {
     const estudiantes = require("../controllers/estudiante.controller.js");
-    var router = require("express").Router();
+    const router = require("express").Router();
 
-    // Create a new Estudiante
-    router.post("/create/", estudiantes.create);
+    // Crear un nuevo estudiante
+    router.post("/", estudiantes.create);
 
-    // Retrieve all Estudiantes
+    // Obtener todos los estudiantes
     router.get("/", estudiantes.findAll);
 
-    // Retrieve a single Estudiante by id
-    router.get("/:id", estudiantes.findOne);
+    // Obtener un estudiante por carnet
+    router.get("/carnet/:carnet", estudiantes.findOneByCarnet);
 
-    // Retrieve Estudiante by name
-    router.get("/nombre/:nombre", estudiantes.findByName);
+    // Actualizar un estudiante por carnet
+    router.put("/carnet/:carnet", estudiantes.updateByCarnet);
 
-    // Update an Estudiante with id
-    router.put("/update/:id", estudiantes.update);
+    // Eliminar un estudiante por carnet
+    router.delete("/carnet/:carnet", estudiantes.deleteByCarnet);
 
-    // Delete an Estudiante with id
-    router.delete("/delete/:id", estudiantes.delete);
+    // Eliminar todos los estudiantes
+    router.delete("/", estudiantes.deleteAll);
 
-    // Delete all Estudiantes
-    router.delete("/delete/", estudiantes.deleteAll);
-
-    // Retrieve all activos (estado = 'activo')
+    // Obtener todos los estudiantes activos
     router.get("/estado/activos", estudiantes.findAllActivos);
 
-    // Montamos el router en el endpoint base
-    // Ejemplo: http://localhost:8081/api/estudiantes
     app.use("/api/estudiantes", router);
 };

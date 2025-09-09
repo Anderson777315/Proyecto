@@ -1,22 +1,24 @@
 module.exports = app => {
     const catedraticos = require("../controllers/catedratico.controller.js");
-  
-    var router = require("express").Router();
-  
-    // Crear un nuevo Catedratico
-    router.post("/create/", catedraticos.create);
-  
-    // Obtener todos los Catedraticos
+    const router = require("express").Router();
+
+    // Crear un nuevo catedrático
+    router.post("/", catedraticos.create);
+
+    // Obtener todos los catedráticos
     router.get("/", catedraticos.findAll);
-  
-    // Obtener un solo Catedratico por nombre
+
+    // Obtener un catedrático por nombre
     router.get("/nombre/:nombre", catedraticos.findOneByName);
-  
-    // Actualizar un Catedratico por nombre
+
+    // Actualizar un catedrático por nombre
     router.put("/nombre/:nombre", catedraticos.updateByName);
-  
-    // Eliminar un Catedratico por nombre
+
+    // Eliminar un catedrático por nombre
     router.delete("/nombre/:nombre", catedraticos.deleteByName);
-  
+
+    // Eliminar todos los catedráticos
+    router.delete("/", catedraticos.deleteAll);
+
     app.use('/api/catedraticos', router);
-}
+};

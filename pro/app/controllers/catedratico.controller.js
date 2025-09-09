@@ -1,22 +1,21 @@
 const db = require("../models");
-const Catedratico = db.catedratico;
+const Catedratico = db.Catedratico; // Asegúrate de que tu modelo se llame así
 const Op = db.Sequelize.Op;
 
-// Crear un nuevo Catedrático
+// Crear un nuevo catedrático
 exports.create = (req, res) => {
     if (!req.body.nombre) {
-        res.status(400).send({ message: "El nombre no puede estar vacío!" });
+        res.status(400).send({
+            message: "El nombre no puede estar vacío!"
+        });
         return;
     }
 
     const catedratico = {
         nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        email: req.body.email,
-        especialidad: req.body.especialidad,
-        telefono: req.body.telefono,
-        estado: req.body.estado ? req.body.estado : "activo",
-        fecha_ingreso: req.body.fecha_ingreso ? req.body.fecha_ingreso : null
+        departamento: req.body.departamento,
+        correo: req.body.correo,
+        telefono: req.body.telefono
     };
 
     Catedratico.create(catedratico)
@@ -37,72 +36,75 @@ exports.findAll = (req, res) => {
         .then(data => res.send(data))
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Ocurrió un error al obtener los catedráticos."
+                message: err.message || "Ocurrió un error al recuperar los catedráticos."
             });
         });
 };
 
 // Obtener un catedrático por nombre
-exports.findOne = (req, res) => {
+exports.findOneByName = (req, res) => {
     const nombre = req.params.nombre;
 
     Catedratico.findOne({ where: { nombre: nombre } })
-        .then(data => {
-            if (data) res.send(data);
-            else res.status(404).send({ message: "Catedrático no encontrado" });
-        })
+        .then(data => res.send(data))
         .catch(err => {
             res.status(500).send({
-                message: "Error al obtener catedrático con nombre=" + nombre
+                message: "Error al recuperar el catedrático con nombre=" + nombre
             });
         });
 };
 
 // Actualizar un catedrático por nombre
-exports.update = (req, res) => {
+exports.updateByName = (req, res) => {
     const nombre = req.params.nombre;
 
-    Catedratico.update(req.body, { where: { nombre } })
+    Catedratico.update(req.body, { where: { nombre: nombre } })
         .then(num => {
             if (num == 1) {
                 res.send({ message: "Catedrático actualizado correctamente." });
             } else {
-                res.send({ message: `No se pudo actualizar el catedrático con nombre=${nombre}. Quizá no se encontró.` });
+                res.send({
+                    message: `No se pudo actualizar el catedrático con nombre=${nombre}. Quizá no se encontró o el cuerpo está vacío!`
+                });
             }
         })
         .catch(err => {
-            res.status(500).send({ message: "Error al actualizar catedrático con nombre=" + nombre });
+            res.status(500).send({
+                message: "Error al actualizar catedrático con nombre=" + nombre
+            });
         });
 };
 
 // Eliminar un catedrático por nombre
-exports.delete = (req, res) => {
+exports.deleteByName = (req, res) => {
     const nombre = req.params.nombre;
 
-    Catedratico.destroy({ where: { nombre } })
+    Catedratico.destroy({ where: { nombre: nombre } })
         .then(num => {
-            if (num == 1) res.send({ message: "Catedrático eliminado correctamente." });
-            else res.send({ message: `No se encontró el catedrático con nombre=${nombre}.` });
+            if (num == 1) {
+                res.send({ message: "Catedrático eliminado correctamente!" });
+            } else {
+                res.send({
+                    message: `No se pudo eliminar el catedrático con nombre=${nombre}. Quizá no se encontró!`
+                });
+            }
         })
         .catch(err => {
-            res.status(500).send({ message: "No se pudo eliminar catedrático con nombre=" + nombre });
+            res.status(500).send({
+                message: "No se pudo eliminar el catedrático con nombre=" + nombre
+            });
         });
 };
 
 // Eliminar todos los catedráticos
 exports.deleteAll = (req, res) => {
     Catedratico.destroy({ where: {}, truncate: false })
-        .then(nums => res.send({ message: `${nums} catedráticos eliminados.` }))
+        .then(nums => {
+            res.send({ message: `${nums} catedráticos fueron eliminados correctamente!` });
+        })
         .catch(err => {
-            res.status(500).send({ message: err.message || "Ocurrió un error al eliminar todos los catedráticos." });
-        });
-};
-
-// Obtener todos los catedráticos activos
-exports.findAllActive = (req, res) => {
-    Catedratico.findAll({ where: { estado: "activo" } })
-        .then(data => res.send(data))
-        .catch(err => {
-            res.status(500).send({ message: err.message || "Ocurrió un error al obtener catedráticos activos." });
+            res.status(500).send({
+                message: err.message || "Ocurrió un error al eliminar todos los catedráticos."
+            });
         });
 };

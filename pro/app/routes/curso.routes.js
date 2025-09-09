@@ -1,25 +1,24 @@
 module.exports = app => {
-    const curso = require("../controllers/curso.controller.js");
-  
-    var router = require("express").Router();
-  
+    const cursoController = require("../controllers/curso.controller.js");
+    const router = require("express").Router();
+
     // Crear un nuevo curso
-    router.post("/crear", curso.create);
-  
+    router.post("/", cursoController.create);
+
     // Obtener todos los cursos
-    router.get("/", curso.findAll);
-  
-    // Obtener un solo curso por nombre
-    router.get("/nombre/:nombre", curso.findOneByName);
-  
+    router.get("/", cursoController.findAll);
+
+    // Obtener un curso por nombre
+    router.get("/nombre/:nombre", cursoController.findOne);
+
     // Actualizar un curso por nombre
-    router.put("/nombre/:nombre", curso.updateByName);
-  
+    router.put("/nombre/:nombre", cursoController.update);
+
     // Eliminar un curso por nombre
-    router.delete("/nombre/:nombre", curso.deleteByName);
+    router.delete("/nombre/:nombre", cursoController.delete);
 
     // Eliminar todos los cursos
-    router.delete("/delete", curso.deleteAll);
+    router.delete("/", cursoController.deleteAll);
 
     app.use('/api/curso', router);
-}
+};
